@@ -1,14 +1,15 @@
 import sys
 import os
 
-import subprocess
-from PySide6.QtCore import QTimer
+#import subprocess
+#from PySide6.QtCore import QTimer
 
 os.environ["GDK_BACKEND"] = "x11"
 os.environ["QT_QPA_PLATFORM"] = "xcb"
 
 from PySide6.QtWidgets import QApplication
 from ui.overlay import AvatarOverlay
+from services.power_profile import PowerProfileMonitor
 
 def get_avatar_state(profile):
 
@@ -32,6 +33,8 @@ def get_avatar_state(profile):
         ("🌪️", f"Power profile: {profile}")
     )
 
+
+
 def main():
     
     app = QApplication(sys.argv)
@@ -39,43 +42,18 @@ def main():
     
     window = AvatarOverlay()
     
-    last_profile = None
+    def handle_profile_changed(profile):
 
-    def check_power_profile():
-        nonlocal last_profile
+        character, message = get_avatar_state(profile)
 
-        try:
-            result = subprocess.run(
-                ["powerprofilesctl", "get"],
-                capture_output=True,
-                text=True,
-                check=True
-            )
+        print(f"Power profile changed: {profile}")
 
-            current_profile = result.stdout.strip()
+        window.play_animation(character, message)
 
-            # Only animate when the profile changes
-            if current_profile != last_profile:
 
-                last_profile = current_profile
-
-                character, message = get_avatar_state(
-                    current_profile
-                )
-
-                window.play_animation(character, message)
-
-                print(f"Power profile changed: {current_profile}")
-
-        except (FileNotFoundError, subprocess.CalledProcessError) as error:
-            print(f"Could not read power profile: {error}")
+    monitor = PowerProfileMonitor(handle_profile_changed)
     
-    timer = QTimer(app)
-    timer.timeout.connect(check_power_profile)
-    timer.start(1500)
 
-    # Detect the current profile immediately
-    check_power_profile()
     
     sys.exit(app.exec())
     
