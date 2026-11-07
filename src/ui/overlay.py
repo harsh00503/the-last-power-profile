@@ -5,6 +5,9 @@ from PySide6.QtCore import (Qt, QPropertyAnimation, QEasingCurve)
 
 from PySide6.QtCore import QSequentialAnimationGroup, QPauseAnimation
 
+from PySide6.QtGui import QPixmap
+from pathlib import Path
+
 class AvatarOverlay(QWidget):
     
     def __init__(self):
@@ -25,23 +28,32 @@ class AvatarOverlay(QWidget):
         screen = QApplication.primaryScreen()
         screen_geometry = screen.availableGeometry()
 
-        x = (screen_geometry.width() - self.width()) // 2
-        y = (screen_geometry.height() - self.height()) // 2
+        x = screen_geometry.x() + (screen_geometry.width() - self.width()) // 2
+        y = screen_geometry.y() + (screen_geometry.height() - self.height()) // 2
 
         self.move(x, y)
 
         layout = QVBoxLayout(self)
 
-        self.avatar = QLabel("🌪️")
-        self.avatar.setAlignment(
-            Qt.AlignmentFlag.AlignCenter
-        )
-        self.avatar.setStyleSheet("font-size: 300px;")
-
+        self.avatar = QLabel()
         self.status = QLabel("The Avatar has awakened!")
-        self.status.setAlignment(
-            Qt.AlignmentFlag.AlignCenter
+        self.status.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.avatar.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.avatar_image = QPixmap(
+            str(Path(__file__).resolve().parents[2] / "assets/aang/aang_balanced.png")
         )
+
+        self.avatar.setPixmap(
+            self.avatar_image.scaled(
+                300, 300,
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation
+            )
+        )
+        
+        if self.avatar_image.isNull():
+            raise FileNotFoundError("Could not load the initial Avatar image.")
         
         self.status.setStyleSheet("""
             color: white;
@@ -88,11 +100,25 @@ class AvatarOverlay(QWidget):
         
     
         
-    def play_animation(self, character="🌪️", message="The Avatar has awakened!"):
+    def play_animation(self, image_path, message):
 
         self.animation_group.stop()
 
-        self.avatar.setText(character)
+        self.avatar_image = QPixmap(image_path)
+        
+        self.avatar_image = QPixmap(image_path)
+
+        if self.avatar_image.isNull():
+            print(f"Could not load Avatar image: {image_path}")
+            return
+
+        self.avatar.setPixmap(
+            self.avatar_image.scaled(
+                300, 300,
+                Qt.AspectRatioMode.KeepAspectRatio,
+                Qt.TransformationMode.SmoothTransformation
+            )
+        )
         self.status.setText(message)
 
         self.opacity.setOpacity(0.0)

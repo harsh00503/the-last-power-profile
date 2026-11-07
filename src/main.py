@@ -10,28 +10,31 @@ os.environ["QT_QPA_PLATFORM"] = "xcb"
 from PySide6.QtWidgets import QApplication
 from ui.overlay import AvatarOverlay
 from services.power_profile import PowerProfileMonitor
+from pathlib import Path
+
+ASSET_DIR = Path(__file__).resolve().parents[1] / "assets" / "aang"
 
 def get_avatar_state(profile):
 
     states = {
-        "performance": (
-            "🔥",
-            "Avatar State activated!"
-        ),
-        "balanced": (
-            "🌪️",
-            "The Avatar is at peace."
-        ),
-        "power-saver": (
-            "😴",
-            "Saving energy..."
-        )
-    }
+    "performance": (
+        str(ASSET_DIR / "aang_performance.png"),
+        "Avatar State activated!"
+    ),
+    "balanced": (
+        str(ASSET_DIR / "aang_balanced.png"),
+        "The Avatar is at peace."
+    ),
+    "power-saver": (
+        str(ASSET_DIR / "aang_power_saver.png"),
+        "Saving energy..."
+    )
+}
 
     return states.get(
-        profile,
-        ("🌪️", f"Power profile: {profile}")
-    )
+    profile,
+    (str(ASSET_DIR / "meditating.png"), f"Power profile: {profile}")
+)
 
 
 
