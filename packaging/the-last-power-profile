@@ -1,0 +1,38 @@
+#!/bin/bash
+
+SERVICE="the-last-power-profile.service"
+
+case "$1" in
+
+    start)
+        systemctl --user start "$SERVICE"
+        ;;
+
+    stop)
+        systemctl --user stop "$SERVICE"
+        ;;
+
+    restart)
+        systemctl --user restart "$SERVICE"
+        ;;
+
+    status)
+        systemctl --user status "$SERVICE" --no-pager
+        ;;
+
+    enable)
+        systemctl --user enable --now "$SERVICE"
+        ;;
+
+    disable)
+        systemctl --user disable --now "$SERVICE"
+        ;;
+
+    *)
+        echo "The Last Power Profile"
+        echo ""
+        echo "Usage: the-last-power-profile {start|stop|restart|status|enable|disable}"
+        exit 1
+        ;;
+
+esac
