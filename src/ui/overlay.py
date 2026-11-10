@@ -7,6 +7,7 @@ from PySide6.QtCore import QSequentialAnimationGroup, QPauseAnimation
 
 from PySide6.QtGui import QPixmap
 from pathlib import Path
+from app_paths import resource_path
 
 class AvatarOverlay(QWidget):
     
@@ -41,7 +42,7 @@ class AvatarOverlay(QWidget):
         self.avatar.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
         self.avatar_image = QPixmap(
-            str(Path(__file__).resolve().parents[2] / "assets/aang/aang_balanced.png")
+            str(resource_path("assets", "aang", "aang_balanced.png"))
         )
 
         self.avatar.setPixmap(

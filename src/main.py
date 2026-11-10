@@ -11,8 +11,9 @@ from PySide6.QtWidgets import QApplication
 from ui.overlay import AvatarOverlay
 from services.power_profile import PowerProfileMonitor
 from pathlib import Path
+from app_paths import resource_path
 
-ASSET_DIR = Path(__file__).resolve().parents[1] / "assets" / "aang"
+ASSET_DIR = resource_path("assets", "aang")
 
 def get_avatar_state(profile):
 
