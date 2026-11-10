@@ -85,3 +85,9 @@ The application uses PyInstaller to create a standalone executable and `dpkg-deb
 ## License
 
 MIT License. See [LICENSE](LICENSE).
+
+## Artwork Disclaimer
+
+Avatar artwork used in the project are not owned by me and may
+belong to third parties and is not necessarily covered by the 
+project's MIT license.
