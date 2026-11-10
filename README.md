@@ -60,7 +60,7 @@ journalctl --user -u the-last-power-profile.service -f
 Clone the repository:
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/harsh00503/the-last-power-profile.git
 cd the-last-power-profile
 ```
 
