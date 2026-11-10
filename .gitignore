@@ -218,3 +218,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Debian packaging build artifacts
+packaging/build/
+
+# Generated Debian packages
+*.deb
+
+# PyInstaller build artifacts
+build/
+dist/
+*.spec
